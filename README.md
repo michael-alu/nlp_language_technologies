@@ -25,16 +25,23 @@ We compare five approaches for classifying Swahili news articles into five categ
 
 ```
 data/
-  raw/            Original Zindi files
-  processed/      Cleaned train, validation and test splits (created by src/data_cleaning.py)
+  raw/                  Original Zindi files
+  processed/            Cleaned train, validation and test splits (created by src/data_cleaning.py)
 notebooks/
-  01_eda.ipynb    Exploratory data analysis
+  00_model_template.ipynb  Starting point for every model notebook
+  01_eda.ipynb             Exploratory data analysis
 results/
-  figures/        Saved plots
+  experiment_logs/      One CSV per model, one row per experiment
+  figures/              Saved plots, one folder per model
+  misclassified/        Wrong test predictions per model, for the error analysis
+  submissions/          Zindi submission files
 src/
-  config.py         Paths, labels, random seed and split sizes
-  data_cleaning.py  Cleans the raw text and creates the stratified splits
-  data_loading.py   Helper functions to load the splits in any notebook
+  config.py             Paths, labels, random seed and split sizes
+  data_cleaning.py      Cleans the raw text and creates the stratified splits
+  data_loading.py       Loads the splits and converts labels to ids
+  evaluation.py         Scores, misclassified examples and Zindi submissions
+  experiment_log.py     Saves one row per experiment
+  plots.py              Confusion matrix, ROC curves and learning curves
 ```
 
 ## How to run
@@ -51,21 +58,39 @@ python -m src.data_cleaning
 jupyter notebook notebooks/01_eda.ipynb
 ```
 
-## Using the shared data in your notebook
+## Training a model
 
-Every model must use the same splits so the results can be compared fairly.
+1. Copy `notebooks/00_model_template.ipynb` and rename it after your model.
+2. Set `MEMBER` and `MODEL_NAME` at the top.
+3. Replace the example model with yours. It must output a probability for each class, in the order of `config.LABELS`.
+4. After every experiment, run the evaluation section. Change `experiment_name` and `notes` so the log shows how your experiments progressed.
+5. When you have chosen your final settings, run the test section once.
+6. Add your notebook and your files in `results/` to the repository.
 
-```python
-from src import data_loading
+| Notebook | Model | Owner |
+|---|---|---|
+| 02_logistic_regression.ipynb | TF-IDF + Logistic Regression | Vestine |
+| 03_naive_bayes.ipynb | TF-IDF + Naive Bayes | Samuel |
+| 04_cnn.ipynb | 1D CNN | Alain |
+| 05_bilstm.ipynb | BiLSTM with attention | Alain |
+| 06_transformer.ipynb | Fine-tuned transformer | Michael |
 
-train = data_loading.load_train()
-validation = data_loading.load_validation()
-test = data_loading.load_test()
+### Rules for a fair comparison
 
-train_label_ids = data_loading.labels_to_ids(train["category"])
-```
+- Everyone uses the same splits from `data_loading`.
+- Train on `train`, tune on `validation`, and only use `test` once for the final scores.
+- Log every experiment, including the ones that did badly. They are evidence too.
 
-Train on `train`, tune on `validation`, and only use `test` once for the final scores.
+### Metrics
+
+| Metric | Why |
+|---|---|
+| Macro-F1 (main metric) | Every class counts equally, so the rare classes matter |
+| Log loss | The metric Zindi uses to score submissions |
+| Per-class F1 | Shows which classes each model struggles with |
+| Accuracy | Reported for reference only, because it hides the rare classes |
+
+For reference, a model that only predicts the class shares scores a macro-F1 of 0.11 and a log loss of 1.15 on validation.
 
 ## Splits
 
