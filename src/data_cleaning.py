@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from src import config
 
 
-def unwrap_list_text(text):
+def unwrap_list_text(text: str) -> str:
     # Some sports articles were saved as a Python list of paragraphs,
     # for example "['First paragraph. ', 'Second paragraph.']"
     looks_like_a_list = text.startswith("[") and text.endswith("]")
@@ -26,12 +26,12 @@ def unwrap_list_text(text):
     return " ".join(paragraphs_as_text)
 
 
-def remove_urls(text):
+def remove_urls(text: str) -> str:
     url_pattern = r"https?://\S+|www\.\S+"
     return re.sub(url_pattern, " ", text)
 
 
-def replace_fancy_characters(text):
+def replace_fancy_characters(text: str) -> str:
     replacements = {
         "“": '"',
         "”": '"',
@@ -47,18 +47,18 @@ def replace_fancy_characters(text):
     return text
 
 
-def add_space_after_sentence_end(text):
+def add_space_after_sentence_end(text: str) -> str:
     # Many sentences are glued together, like "yoyote.Hayo yalisemwa"
     glued_sentence_pattern = r"([.!?])([A-Za-z])"
     return re.sub(glued_sentence_pattern, r"\1 \2", text)
 
 
-def collapse_whitespace(text):
+def collapse_whitespace(text: str) -> str:
     single_spaced_text = re.sub(r"\s+", " ", text)
     return single_spaced_text.strip()
 
 
-def clean_text(text):
+def clean_text(text: str) -> str:
     text = str(text).strip()
     text = unwrap_list_text(text)
     text = remove_urls(text)
@@ -68,15 +68,15 @@ def clean_text(text):
     return text
 
 
-def count_words(text):
+def count_words(text: str) -> int:
     return len(text.split())
 
 
-def clean_labels(labels):
+def clean_labels(labels: pd.Series) -> pd.Series:
     return labels.str.strip().str.lower()
 
 
-def remove_near_empty_articles(data):
+def remove_near_empty_articles(data: pd.DataFrame) -> pd.DataFrame:
     word_counts = data["content"].apply(count_words)
     has_enough_words = word_counts >= config.MINIMUM_WORDS_PER_ARTICLE
 
@@ -87,7 +87,7 @@ def remove_near_empty_articles(data):
     return data[has_enough_words].reset_index(drop=True)
 
 
-def clean_train_data(raw_train):
+def clean_train_data(raw_train: pd.DataFrame) -> pd.DataFrame:
     train = raw_train.copy()
     train["content"] = train["content"].apply(clean_text)
     train["category"] = clean_labels(train["category"])
@@ -95,14 +95,16 @@ def clean_train_data(raw_train):
     return train
 
 
-def clean_zindi_test_data(raw_test):
+def clean_zindi_test_data(raw_test: pd.DataFrame) -> pd.DataFrame:
     test = raw_test.copy()
     test = test.rename(columns={"swahili_id": "id"})
     test["content"] = test["content"].apply(clean_text)
     return test
 
 
-def split_train_validation_test(data):
+def split_train_validation_test(
+    data: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     # Stratified splits keep the rare classes (burudani has only 17 articles)
     # in every split, with the same class proportions as the full data
     holdout_share = config.VALIDATION_SHARE + config.TEST_SHARE
@@ -126,7 +128,9 @@ def split_train_validation_test(data):
     return train, validation, test
 
 
-def print_split_summary(train, validation, test):
+def print_split_summary(
+    train: pd.DataFrame, validation: pd.DataFrame, test: pd.DataFrame
+) -> None:
     summary = pd.DataFrame(
         {
             "train": train["category"].value_counts(),
@@ -138,7 +142,7 @@ def print_split_summary(train, validation, test):
     print(summary)
 
 
-def main():
+def main() -> None:
     raw_train = pd.read_csv(config.RAW_TRAIN_FILE)
     raw_test = pd.read_csv(config.RAW_TEST_FILE)
 
