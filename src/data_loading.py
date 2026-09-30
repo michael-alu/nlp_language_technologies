@@ -27,3 +27,11 @@ def labels_to_ids(labels: pd.Series) -> np.ndarray:
 
 def ids_to_labels(ids: np.ndarray) -> list[str]:
     return [config.LABELS[index] for index in ids]
+
+
+def load_train_and_validation() -> pd.DataFrame:
+    train = load_train()
+
+    validation = load_validation()
+
+    return pd.concat([train, validation], ignore_index=True)

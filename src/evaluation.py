@@ -50,7 +50,9 @@ def compute_scores(true_ids: np.ndarray, probabilities: np.ndarray) -> dict[str,
     return scores
 
 
-def print_classification_report(true_ids: np.ndarray, probabilities: np.ndarray) -> None:
+def print_classification_report(
+    true_ids: np.ndarray, probabilities: np.ndarray
+) -> None:
     predicted_ids = get_predicted_ids(probabilities)
 
     all_label_ids = list(range(len(config.LABELS)))
@@ -111,3 +113,16 @@ def save_zindi_submission(
     submission.to_csv(file_path, index=False)
 
     print(f"Saved Zindi submission to {file_path}")
+
+
+def summarise_scores(list_of_scores: list[dict[str, float]]) -> dict[str, float]:
+    scores_table = pd.DataFrame(list_of_scores)
+
+    summary = {}
+
+    for name in scores_table.columns:
+        summary[name] = round(float(scores_table[name].mean()), 4)
+
+        summary[f"{name}_std"] = round(float(scores_table[name].std()), 4)
+
+    return summary
