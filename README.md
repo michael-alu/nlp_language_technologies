@@ -36,12 +36,15 @@ results/
   misclassified/        Wrong test predictions per model, for the error analysis
   submissions/          Zindi submission files
 src/
+  calibration.py        Temperature scaling for neural model probabilities
   config.py             Paths, labels, random seed and split sizes
+  cross_validation.py   Repeated stratified 5-fold cross-validation for the baselines
   data_cleaning.py      Cleans the raw text and creates the stratified splits
   data_loading.py       Loads the splits and converts labels to ids
   evaluation.py         Scores, misclassified examples and Zindi submissions
   experiment_log.py     Saves one row per experiment
   plots.py              Confusion matrix, ROC curves and learning curves
+  reproducibility.py    Sets random seeds and lists the seeds for final runs
 ```
 
 ## How to run
@@ -85,12 +88,21 @@ jupyter notebook notebooks/01_eda.ipynb
 
 | Metric | Why |
 |---|---|
-| Macro-F1 (main metric) | Every class counts equally, so the rare classes matter |
+| Macro-F1 (main metric) | Every class counts equally, so the rare classes matter. We use the scikit-learn formula: the mean of the per-class F1 scores |
 | Log loss | The metric Zindi uses to score submissions |
 | Per-class F1 | Shows which classes each model struggles with |
 | Accuracy | Reported for reference only, because it hides the rare classes |
 
 For reference, a model that only predicts the class shares scores a macro-F1 of 0.11 and a log loss of 1.15 on validation.
+
+### Dealing with the tiny rare classes
+
+The validation set has only 2 `burudani` articles and the test set has 3, so one mistake moves macro-F1 by several points.
+
+- **Baselines** (logistic regression, Naive Bayes) compare settings with repeated stratified 5-fold cross-validation (5 folds x 3 repeats) and report the mean and standard deviation.
+- **Neural models** train their final settings with 3 seeds (`FINAL_RUN_SEEDS`) and report the mean and standard deviation.
+- **Everyone** also reports on the same fixed test set, so all five models can be compared directly.
+- **Neural models** calibrate their probabilities with temperature scaling before computing log loss.
 
 ## Splits
 
