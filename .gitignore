@@ -5,5 +5,5 @@ __pycache__/
 .venv/
 venv/
 results.zip
-tasks.md
+tasks.*
 research_prompt.md

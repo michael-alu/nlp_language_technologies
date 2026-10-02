@@ -104,7 +104,9 @@ def plot_roc_curves(
     plt.show()
 
 
-def plot_learning_curves(history: dict[str, list[float]], model_name: str) -> None:
+def plot_learning_curves(
+    history: dict[str, list[float]], model_name: str, experiment_name: str = ""
+) -> None:
     # One value per epoch, for example
     # {"train_loss": [...], "validation_loss": [...], "validation_macro_f1": [...]}
     epochs = range(1, len(history["train_loss"]) + 1)
@@ -132,11 +134,16 @@ def plot_learning_curves(history: dict[str, list[float]], model_name: str) -> No
 
     f1_axis.set_ylabel("Macro-F1")
 
-    figure.suptitle(f"Learning curves: {model_name}")
+    figure.suptitle(f"Learning curves: {model_name} {experiment_name}")
 
     plt.tight_layout()
 
-    file_path = get_model_figures_directory(model_name) / "learning_curves.png"
+    file_name = "learning_curves.png"
+
+    if experiment_name:
+        file_name = f"learning_curves_{experiment_name}.png"
+
+    file_path = get_model_figures_directory(model_name) / file_name
 
     plt.savefig(file_path, dpi=150)
 
