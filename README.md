@@ -45,6 +45,7 @@ src/
   experiment_log.py     Saves one row per experiment
   plots.py              Confusion matrix, ROC curves and learning curves
   reproducibility.py    Sets random seeds and lists the seeds for final runs
+  transformer_training.py  Tokenising, training and prediction for the transformer experiments
 ```
 
 ## How to run
