@@ -116,3 +116,9 @@ The labelled data is split 70 / 15 / 15, stratified by class, with random seed 4
 | biashara | 951 | 204 | 204 |
 | kimataifa | 38 | 8 | 8 |
 | burudani | 11 | 2 | 3 |
+
+### Naive Bayes experiments and reporting
+
+Run `notebooks/03_naive_bayes.ipynb` from top to bottom to compare ten count/TF-IDF, bigram, smoothing and ComplementNB configurations. Every candidate is evaluated with repeated 5-fold cross-validation (3 repeats), and the final settings are selected by CV mean macro-F1 before one fixed-test evaluation. Results are logged under `naive_bayes`. Re-running appends experiment logs; the comparison notebook uses the latest named experiment/split record.
+
+Run `notebooks/07_results_comparison.ipynb` to build tables from `experiment_log.load_all_experiments()` and export final test scores, all CV means/SDs, a macro-F1 bar chart and per-class F1 table/heatmap to `results/comparison/`. Its explicit `FINAL_RECORDS` mapping identifies each owner's final record; update the mapping if CNN/BiLSTM use different log names. Missing final results are marked pending. Neural rows use final seed summaries, while deterministic baselines retain one fixed-test score and report variability separately through CV. The methodology subsection is in `reports/naive_bayes_methodology.md`; complete the five-model discussion after all final results exist.
