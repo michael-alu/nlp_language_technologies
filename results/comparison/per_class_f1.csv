@@ -1,4 +1,6 @@
 model,kitaifa,michezo,biashara,kimataifa,burudani
-logistic regression,0.8283 (single deterministic run),0.9347 (single deterministic run),0.8233 (single deterministic run),0.4615 (single deterministic run),0.5000 (single deterministic run)
+logistic_regression,0.8489 (single deterministic run),0.9412 (single deterministic run),0.8357 (single deterministic run),0.4706 (single deterministic run),0.5000 (single deterministic run)
 naive_bayes,0.8365 (single deterministic run),0.9435 (single deterministic run),0.8111 (single deterministic run),0.0000 (single deterministic run),0.5000 (single deterministic run)
+cnn,0.8010 ± 0.0174,0.9385 ± 0.0031,0.7947 ± 0.0168,0.4537 ± 0.0467,0.4815 ± 0.0321
+bilstm,0.8384 ± 0.0096,0.9431 ± 0.0047,0.8272 ± 0.0312,0.0000 ± 0.0000,0.0000 ± 0.0000
 transformer,0.8763 ± 0.0185,0.9586 ± 0.0041,0.8737 ± 0.0171,0.4794 ± 0.2466,0.3333 ± 0.2887

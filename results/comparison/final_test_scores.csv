@@ -1,6 +1,6 @@
 model,status,seed_runs,macro_f1,weighted_f1,accuracy,log_loss,CV macro-F1 (mean ± SD)
-logistic regression,available,,0.7095 (single deterministic run),0.8574 (single deterministic run),0.8577 (single deterministic run),0.5281 (single deterministic run),0.5627 ± 0.0134
+logistic_regression,available,,0.7193 (single deterministic run),0.8709 (single deterministic run),0.8706 (single deterministic run),0.4649 (single deterministic run),0.6326 ± 0.0482
 naive_bayes,available,,0.6182 (single deterministic run),0.8555 (single deterministic run),0.8603 (single deterministic run),0.6539 (single deterministic run),0.5325 ± 0.0217
-cnn,pending,,pending,pending,pending,pending,not logged / not applicable
-bilstm,pending,,pending,pending,pending,pending,not logged / not applicable
+cnn,available,3.0,0.6939 ± 0.0103,0.8404 ± 0.0111,0.8378 ± 0.0117,0.4580 ± 0.0336,not logged / not applicable
+bilstm,available,3.0,0.5218 ± 0.0084,0.8585 ± 0.0124,0.8646 ± 0.0124,0.4036 ± 0.0112,not logged / not applicable
 transformer,available,3.0,0.7043 ± 0.1043,0.8969 ± 0.0101,0.8991 ± 0.0103,0.3165 ± 0.0075,not logged / not applicable
