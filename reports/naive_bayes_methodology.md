@@ -1,4 +1,4 @@
-# Methodology: Model 2 — Naive Bayes
+# Methodology: Model 2, Naive Bayes
 
 We evaluate Multinomial Naive Bayes (MNB) as a classical Swahili news baseline. All runs use the shared cleaned, stratified data splits and five label IDs in `config.LABELS` order. We wrap word vectorization and classification in a scikit-learn Pipeline returned by `build_model(settings)`, so the vocabulary and inverse document frequencies are fitted only on each training partition.
 
