@@ -6,7 +6,7 @@ We compare five approaches for classifying Swahili news articles into five topic
 
 > **How effectively can sequential modelling approaches classify Swahili news, and what evidence supports the strengths and limitations of the selected approaches?**
 
-**Demo video:** [ADD LINK]
+**Demo video:** [https://canva.link/4jb1rdn34q17qjx](https://canva.link/4jb1rdn34q17qjx)
 
 ## Dataset
 
